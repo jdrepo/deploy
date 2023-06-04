@@ -23,4 +23,4 @@
 # SOFTWARE.
 
 Add-WindowsFeature Web-Server
-Set-Content -Path "C:\inetpub\wwwroot\iisstart.htm" -Value "Hello World from host $($env:computername) !"
+Set-Content -Path "C:\inetpub\wwwroot\iisstart.htm" -Value "Hello World and all from host $($env:computername) !"
