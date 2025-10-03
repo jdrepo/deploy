@@ -230,7 +230,7 @@ Write-Output "Dismounting ISO Image."
 Dismount-DiskImage -InputObject $iso['mountvolume']
 
 Write-Output "Deleting Inbox Apps ISO Image."
-Remove-Item $LanguagePack
+Remove-Item $InboxApps
 
 #endregion
 
