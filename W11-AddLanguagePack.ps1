@@ -25,18 +25,28 @@ $ProgressPreference = 'SilentlyContinue'
 $myjobs = @() 
 
 #https://learn.microsoft.com/en-us/azure/virtual-desktop/windows-11-language-packs
-$LPdownloads = @{
-    'LanguagePack' = "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.1.240331-1435.ge_release_amd64fre_CLIENT_LOF_PACKAGES_OEM.iso" #24h2
+$LPdownloads1 = @{
+    'LanguagePack' = "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.1.240331-1435.ge_release_amd64fre_CLIENT_LOF_PACKAGES_OEM.iso" #24h2, 25H2
     #"https://software-static.download.prss.microsoft.com/dbazure/988969d5-f34g-4e03-ac9d-1f9786c66749/22621.1.220506-1250.ni_release_amd64fre_CLIENT_LOF_PACKAGES_OEM.iso"# Win11 22H2, 23H2
-    'InboxApps'    = "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.1742.240904-1906.ge_release_svc_prod1_amd64fre_InboxApps.iso"  #24h2
+    #'InboxApps'    = "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.6584.250904-1728.ge_release_svc_prod1_amd64fre_InboxApps.iso"  #24h2, 25H2
     #"https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/22621.2501.231009-1937.ni_release_svc_prod3_amd64fre_InboxApps.iso" # Win11 22H2 , 23H2
-    'ODT'          = "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_18129-20030.exe"
+    'ODT'          = "https://download.microsoft.com/download/6c1eeb25-cf8b-41d9-8d0d-cc1dbc032140/officedeploymenttool_19231-20072.exe"
     #"https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_17531-20046.exe" #Office Deployment Tool->  https://www.microsoft.com/en-us/download/details.aspx?id=49117
     
 }
 
-Write-Output "Starting download jobs $(Get-Date)"
-foreach ($download in $LPdownloads.GetEnumerator()) {
+$LPdownloads2 = @{
+    #'LanguagePack' = "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.1.240331-1435.ge_release_amd64fre_CLIENT_LOF_PACKAGES_OEM.iso" #24h2, 25H2
+    #"https://software-static.download.prss.microsoft.com/dbazure/988969d5-f34g-4e03-ac9d-1f9786c66749/22621.1.220506-1250.ni_release_amd64fre_CLIENT_LOF_PACKAGES_OEM.iso"# Win11 22H2, 23H2
+    'InboxApps'    = "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.6584.250904-1728.ge_release_svc_prod1_amd64fre_InboxApps.iso"  #24h2, 25H2
+    #"https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/22621.2501.231009-1937.ni_release_svc_prod3_amd64fre_InboxApps.iso" # Win11 22H2 , 23H2
+    #'ODT'          = "https://download.microsoft.com/download/6c1eeb25-cf8b-41d9-8d0d-cc1dbc032140/officedeploymenttool_19231-20072.exe"
+    #"https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_17531-20046.exe" #Office Deployment Tool->  https://www.microsoft.com/en-us/download/details.aspx?id=49117
+    
+}
+
+Write-Output "Starting download jobs #1 $(Get-Date)"
+foreach ($download in $LPdownloads1.GetEnumerator()) {
     $downloadPath = $tmpDir + "\$(Split-Path $($download.Value) -Leaf)"
     if (!(Test-Path $downloadPath )) {
         #download if not there
@@ -62,24 +72,24 @@ while ($running.count -gt 0)
 Write-Output "Finished downloads $(Get-Date)"
 #endregion
 
-#region Time Zone Redirection
-$Name = "fEnableTimeZoneRedirection"
-$value = "1"
-# Add Registry value
-try {
-    New-ItemProperty -ErrorAction Stop -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name $name -Value $value -PropertyType DWORD -Force
-    if ((Get-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services").PSObject.Properties.Name -contains $name) {
-        Write-Output "Added time zone redirection registry key"
-    }
-    else {
-        Write-Output "Error locating the Timezone registry key"
-    }
-}
-catch {
-    $ErrorMessage = $_.Exception.message
-    Write-Output "Error adding Timezone registry KEY: $ErrorMessage"
-}
-#endregion
+# #region Time Zone Redirection
+# $Name = "fEnableTimeZoneRedirection"
+# $value = "1"
+# # Add Registry value
+# try {
+#     New-ItemProperty -ErrorAction Stop -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name $name -Value $value -PropertyType DWORD -Force
+#     if ((Get-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services").PSObject.Properties.Name -contains $name) {
+#         Write-Output "Added time zone redirection registry key"
+#     }
+#     else {
+#         Write-Output "Error locating the Timezone registry key"
+#     }
+# }
+# catch {
+#     $ErrorMessage = $_.Exception.message
+#     Write-Output "Error adding Timezone registry KEY: $ErrorMessage"
+# }
+# #endregion
 
 #see https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/languages-overview?view=windows-11#build-a-custom-fod-and-language-pack-repository
 
@@ -110,7 +120,7 @@ Disable-ScheduledTask -TaskPath "\Microsoft\Windows\LanguageComponentsInstaller"
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Control Panel\International" /v "BlockCleanupOfUnusedPreinstalledLangPacks" /t REG_DWORD /d 1 /f
 
 ##Set Language Pack Content Stores##
-$LanguagePack = $tmpDir + '\' + $(Split-Path $LPdownloads['LanguagePack'] -Leaf)
+$LanguagePack = $tmpDir + '\' + $(Split-Path $LPdownloads1['LanguagePack'] -Leaf)
 #mount 
 Write-Output "Mounting ISO Image: $LanguagePack"
 $iso = MountIso $LanguagePack
@@ -159,6 +169,9 @@ foreach ($feature in $additionalFODList) {
 Write-Output "Dismounting ISO Image."
 Dismount-DiskImage -InputObject $iso['mountvolume']
 
+Write-Output "Deleting Language Pack ISO Image."
+Remove-Item $LanguagePack
+
 ##Add installed language to language list##
 $LanguageList = Get-WinUserLanguageList
 $LanguageList.Add($targetLanguage)
@@ -168,8 +181,24 @@ Set-WinUserLanguageList $LanguageList -Force
 Write-Output "Finished Language Pack installation $(Get-Date)"
 #endregion
 
+Write-Output "Starting download jobs #2 $(Get-Date)"
+foreach ($download in $LPdownloads2.GetEnumerator()) {
+    $downloadPath = $tmpDir + "\$(Split-Path $($download.Value) -Leaf)"
+    if (!(Test-Path $downloadPath )) {
+        #download if not there
+        $myjobs += Start-Job -ArgumentList $($download.Value), $downloadPath -Name "download" -ScriptBlock {
+            param([string] $downloadURI,
+                [string]$downloadPath
+            )
+            #Invoke-WebRequest -Uri $download -OutFile $downloadPath # is 10 slower than the webclient
+            $wc = New-Object net.webclient
+            $wc.Downloadfile( $downloadURI, $downloadPath)
+        } 
+    }
+}
+
 #region Update Inbox Apps for Multi Language
-$InboxApps = $tmpDir + '\' + $(Split-Path $LPdownloads['InboxApps'] -Leaf)
+$InboxApps = $tmpDir + '\' + $(Split-Path $LPdownloads2['InboxApps'] -Leaf)
 #mount 
 Write-Output "Mounting ISO Image: $InboxApps"
 $iso = MountIso $InboxApps
@@ -199,6 +228,10 @@ foreach ($App in (Get-AppxProvisionedPackage -Online)) {
 }
 Write-Output "Dismounting ISO Image."
 Dismount-DiskImage -InputObject $iso['mountvolume']
+
+Write-Output "Deleting Inbox Apps ISO Image."
+Remove-Item $LanguagePack
+
 #endregion
 
 #region Office Language Pack installation
@@ -220,7 +253,7 @@ $ODTConfig = @"
       <Language ID="$targetLanguage" />
     </Product>
   </Add>
-  <Property Name="SharedComputerLicensing" Value="0" />
+  <Property Name="SharedComputerLicensing" Value="1" />
   <Property Name="SCLCacheOverride" Value="0" />
   <Property Name="AUTOACTIVATE" Value="0" />
   <Property Name="FORCEAPPSHUTDOWN" Value="FALSE" />
@@ -248,4 +281,4 @@ catch {
 Write-Output "End Office Language Pack $(Get-Date)"
 #endregion
 
-stop-tran
+Stop-Transcript
