@@ -168,7 +168,7 @@ foreach ($feature in $additionalFODList) {
 
 Write-Output "Dismounting ISO Image."
 Dismount-DiskImage -InputObject $iso['mountvolume']
-
+Start-Sleep -Seconds 5
 Write-Output "Deleting Language Pack ISO Image."
 Remove-Item $LanguagePack
 
@@ -228,7 +228,7 @@ foreach ($App in (Get-AppxProvisionedPackage -Online)) {
 }
 Write-Output "Dismounting ISO Image."
 Dismount-DiskImage -InputObject $iso['mountvolume']
-
+Start-Sleep -Seconds 5
 Write-Output "Deleting Inbox Apps ISO Image."
 Remove-Item $InboxApps
 
