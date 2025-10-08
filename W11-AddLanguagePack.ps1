@@ -69,7 +69,7 @@ do {
 }
 while ($running.count -gt 0)
 
-Write-Output "Finished downloads $(Get-Date)"
+Write-Output "Finished downloads #1 $(Get-Date)"
 #endregion
 
 # #region Time Zone Redirection
@@ -196,6 +196,16 @@ foreach ($download in $LPdownloads2.GetEnumerator()) {
         } 
     }
 }
+
+do {
+    Start-Sleep 15
+    $running = @($myjobs | Where-Object { ($_.State -eq 'Running') })
+    $myjobs | Group-Object State | Select-Object count, name
+    Write-Output "-----------------"
+}
+while ($running.count -gt 0)
+
+Write-Output "Finished downloads #2 $(Get-Date)"
 
 #region Update Inbox Apps for Multi Language
 $InboxApps = $tmpDir + '\' + $(Split-Path $LPdownloads2['InboxApps'] -Leaf)
