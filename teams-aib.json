@@ -1,0 +1,17 @@
+[
+  {
+    "destination": "C:\\AVDImage\\TeamsOptimization.ps1",
+    "name": "avdBuiltInScript_teamsOptimization",
+    "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/TeamsOptimization.ps1",
+    "type": "File"
+  },
+  {
+    "inline": [
+      "C:\\AVDImage\\TeamsOptimization.ps1 -WebRTCInstaller \"https://aka.ms/msrdcwebrtcsvc/msi\" -VCRedistributableLink \"https://aka.ms/vs/17/release/vc_redist.x64.exe\" -TeamsBootStrapperUrl \"https://go.microsoft.com/fwlink/?linkid=2243204&clcid=0x409\""
+    ],
+    "name": "avdBuiltInScript_teamsOptimization-parameter",
+    "runAsSystem": true,
+    "runElevated": true,
+    "type": "PowerShell"
+  }
+]
