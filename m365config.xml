@@ -1,4 +1,4 @@
-<Configuration ID="2ce02db2-1d5c-43d5-883c-9e0a01fd3546">
+<Configuration>
   <Add OfficeClientEdition="64" Channel="MonthlyEnterprise">
     <Product ID="O365ProPlusEEANoTeamsRetail">
       <Language ID="MatchOS" />
