@@ -10,8 +10,12 @@ New-ItemProperty -Path $KerbRegPath -Name "CloudKerberosTicketRetrievalEnabled" 
 # This will let you load your profile on many different VMs instead of being limited to just one. 
 # To enable this setting, create the following registry value
 $LoadCredKeyRegPath = "HKLM:\Software\Policies\Microsoft\AzureADAccount"
+# Create the key if it does not exist
+If (-NOT (Test-Path $LoadCredKeyRegPath)) {
+  New-Item -Path $LoadCredKeyRegPath -Force | Out-Null
+}  
+# Now set the value
 New-ItemProperty -Path $LoadCredKeyRegPath -Name "LoadCredKeyFromProfile" -Value 1 -PropertyType DWord -Force
-
 
 # Reboot to enable the configuration changes
 
