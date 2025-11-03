@@ -17,6 +17,28 @@ If (-NOT (Test-Path $LoadCredKeyRegPath)) {
 # Now set the value
 New-ItemProperty -Path $LoadCredKeyRegPath -Name "LoadCredKeyFromProfile" -Value 1 -PropertyType DWord -Force
 
+# FSLogix Config
+$ParentPath = "HKLM:\SOFTWARE\FSLogix"
+$RegPath = "$ParentPath\Profiles"
+$ProfilesPath = "\\sagwcavd002prof001.file.core.windows.net\fslogix1\profc\w11-2g"
+
+# Ensure FSLogix keys exist
+if (-not (Test-Path $ParentPath)) {
+    New-Item -Path "HKLM:\SOFTWARE" -Name "FSLogix" -Force | Out-Null
+}
+if (-not (Test-Path $RegPath)) {
+    New-Item -Path $ParentPath -Name "Profiles" -Force | Out-Null
+}
+
+# Set FSLogix/Profiles registry values
+New-ItemProperty -Path $RegPath -Name "FlipFlopProfileDirectoryName" -Value 1 -PropertyType DWord -Force
+New-ItemProperty -Path $RegPath -Name "VolumeType" -Value "VHDX" -PropertyType String -Force
+New-ItemProperty -Path $RegPath -Name "VHDLocations" -Value $ProfilesPath -PropertyType String -Force
+New-ItemProperty -Path $RegPath -Name "Enabled" -Value 1 -PropertyType DWord -Force
+New-ItemProperty -Path $RegPath -Name "DeleteLocalProfileWhenVHDShouldApply" -Value 1 -PropertyType DWord -Force
+# New-ItemProperty -Path $RegPath -Name "RedirXMLSourceFolder" -Value $RedirectionPath -PropertyType String -Force
+
+
 # Reboot to enable the configuration changes
 
 $time = [DateTime]::Now.AddMinutes(10)
