@@ -1,5 +1,5 @@
 # Description: This script prepares an EntraJoined only AVD session host for FSLogix and Cloud Kerberos.
-# Pool: 002g
+# Pool: 002q
 
 # Cloud Kerberos
 $KerbRegPath = "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\Kerberos\Parameters"

@@ -1,5 +1,5 @@
 # Description: This script prepares an EntraJoined only AVD session host for FSLogix and Cloud Kerberos.
-# Pool: 002g
+# Pool: 002q
 
 # Cloud Kerberos
 $KerbRegPath = "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\Kerberos\Parameters"
@@ -20,7 +20,7 @@ New-ItemProperty -Path $LoadCredKeyRegPath -Name "LoadCredKeyFromProfile" -Value
 # FSLogix Config
 $ParentPath = "HKLM:\SOFTWARE\FSLogix"
 $RegPath = "$ParentPath\Profiles"
-$ProfilesPath = "\\sagwcavd002prof001.file.core.windows.net\fslogix1\profc\w11-2g"
+$ProfilesPath = "\\sagwcavd002prof001.file.core.windows.net\fslogix1\profc\w11-2q"
 
 # Ensure FSLogix keys exist
 if (-not (Test-Path $ParentPath)) {
