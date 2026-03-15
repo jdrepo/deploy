@@ -72,26 +72,6 @@ while ($running.count -gt 0)
 Write-Output "Finished downloads #1 $(Get-Date)"
 #endregion
 
-# #region Time Zone Redirection
-# $Name = "fEnableTimeZoneRedirection"
-# $value = "1"
-# # Add Registry value
-# try {
-#     New-ItemProperty -ErrorAction Stop -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name $name -Value $value -PropertyType DWORD -Force
-#     if ((Get-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services").PSObject.Properties.Name -contains $name) {
-#         Write-Output "Added time zone redirection registry key"
-#     }
-#     else {
-#         Write-Output "Error locating the Timezone registry key"
-#     }
-# }
-# catch {
-#     $ErrorMessage = $_.Exception.message
-#     Write-Output "Error adding Timezone registry KEY: $ErrorMessage"
-# }
-# #endregion
-
-#see https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/languages-overview?view=windows-11#build-a-custom-fod-and-language-pack-repository
 
 #region Language pack installation
 Write-Output "Entering Language Pack installation $(Get-Date)"
@@ -247,48 +227,48 @@ Remove-Item $InboxApps
 #region Office Language Pack installation
 #https://www.microsoft.com/en-us/download/details.aspx?id=49117
 #downloaded Office Deployment Tool -> created a config file (https://config.office.com/) to add $targetLanguage as language -> execute OCT tool to download & install LP
-Write-Output "Installing Office Language Pack $(Get-Date)"
+# Write-Output "Installing Office Language Pack $(Get-Date)"
 
-$ODTConfig = @"
-<Configuration ID="6ed8046a-e8ac-46ce-8d33-824b0bfc1e54">
-  <Add OfficeClientEdition="64" Channel="Current">
-    <Product ID="O365ProPlusRetail">
-      <Language ID="$targetLanguage" />
-      <ExcludeApp ID="Groove" />
-    </Product>
-    <Product ID="LanguagePack">
-      <Language ID="$targetLanguage" />
-    </Product>
-    <Product ID="ProofingTools">
-      <Language ID="$targetLanguage" />
-    </Product>
-  </Add>
-  <Property Name="SharedComputerLicensing" Value="1" />
-  <Property Name="SCLCacheOverride" Value="0" />
-  <Property Name="AUTOACTIVATE" Value="0" />
-  <Property Name="FORCEAPPSHUTDOWN" Value="FALSE" />
-  <Property Name="DeviceBasedLicensing" Value="0" />
-  <Updates Enabled="TRUE" />
-  <Display Level="None" AcceptEULA="TRUE" />
-</Configuration>
-"@
+# $ODTConfig = @"
+# <Configuration ID="6ed8046a-e8ac-46ce-8d33-824b0bfc1e54">
+#   <Add OfficeClientEdition="64" Channel="Current">
+#     <Product ID="O365ProPlusRetail">
+#       <Language ID="$targetLanguage" />
+#       <ExcludeApp ID="Groove" />
+#     </Product>
+#     <Product ID="LanguagePack">
+#       <Language ID="$targetLanguage" />
+#     </Product>
+#     <Product ID="ProofingTools">
+#       <Language ID="$targetLanguage" />
+#     </Product>
+#   </Add>
+#   <Property Name="SharedComputerLicensing" Value="1" />
+#   <Property Name="SCLCacheOverride" Value="0" />
+#   <Property Name="AUTOACTIVATE" Value="0" />
+#   <Property Name="FORCEAPPSHUTDOWN" Value="FALSE" />
+#   <Property Name="DeviceBasedLicensing" Value="0" />
+#   <Updates Enabled="TRUE" />
+#   <Display Level="None" AcceptEULA="TRUE" />
+# </Configuration>
+# "@
 
-$ODTConfig
+# $ODTConfig
 
-Out-File -FilePath "$tmpDir\ODTConfig.xml" -InputObject $ODTConfig
+# Out-File -FilePath "$tmpDir\ODTConfig.xml" -InputObject $ODTConfig
 
-Start-Process -filepath "$tmpDir\officedeploymenttool*.exe" -ArgumentList "/extract:$tmpDir\ODT /quiet" -wait
-start-sleep 3
+# Start-Process -filepath "$tmpDir\officedeploymenttool*.exe" -ArgumentList "/extract:$tmpDir\ODT /quiet" -wait
+# start-sleep 3
 
-try {
-    Write-Output "Executing Office Deployment Tool...this will take a while... $(Get-Date)"
-    Start-Process -FilePath "$tmpDir\ODT\setup.exe" -Wait -ErrorAction Stop -ArgumentList "/configure $tmpDir\ODTConfig.xml" -NoNewWindow
-}
-catch {
-    $ErrorMessage = $_.Exception.message
-    Write-Output "Error installing Office Language Pack $ErrorMessage"
-}
-Write-Output "End Office Language Pack $(Get-Date)"
-#endregion
+# try {
+#     Write-Output "Executing Office Deployment Tool...this will take a while... $(Get-Date)"
+#     Start-Process -FilePath "$tmpDir\ODT\setup.exe" -Wait -ErrorAction Stop -ArgumentList "/configure $tmpDir\ODTConfig.xml" -NoNewWindow
+# }
+# catch {
+#     $ErrorMessage = $_.Exception.message
+#     Write-Output "Error installing Office Language Pack $ErrorMessage"
+# }
+# Write-Output "End Office Language Pack $(Get-Date)"
+# #endregion
 
 Stop-Transcript
